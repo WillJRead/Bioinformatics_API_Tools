@@ -35,7 +35,7 @@ All requests are handled through a single reusable function — `query_ensembl(e
 |----------|----------|-------------|
 | `lookup` | `lookup/id/` | Find species and database information for a single identifier such as a gene, transcript, or protein. |
 | `VEP` | `vep/human/hgvs/` | Fetch variant consequences based on HGVS notation. Returns transcript-level consequences, pathogenicity scores, and colocated variant data. |
-| `phenotype` | `/phenotype/gene/human/` | Return phenotype annotations associated with a given gene, sourced from databases including OMIM, ClinVar, and Cancer Gene Census. |
+| `phenotype` | `/phenotype/gene/human/` | Return phenotype annotations associated with a given gene
 
 ---
 
@@ -54,27 +54,17 @@ The function optionally filters results to the **canonical transcript** only —
 ### Phenotype Lookup
 Returns all phenotype associations for a given gene. Supports **case-insensitive keyword filtering** on the description field, so results can be narrowed to a specific disease or condition without needing an exact match.
 
-### Nested JSON Parsing
-Ensembl API responses return deeply nested JSON — dictionaries containing lists containing further dictionaries. The function handles this programmatically using `isinstance()` checks and recursive iteration, extracting only clinically relevant fields rather than printing raw response data.
-
 ---
 
 ## Dependencies
 
 ```
 requests
-pprint (standard library)
+pprint - highly recommend using this as Ensembl returns nested JSON data that can be hard to read
 ```
 
-Install requests via:
-
-```bash
-pip install requests
-```
-
----
-
-## Usage
+## Usage Examples
+I used the gene HNF1A as an example to test this function.
 
 ```python
 # Gene lookup
@@ -92,18 +82,10 @@ phenotypes = query_ensembl(phenotype, "ENSG00000135100")
 ## What I Learned
 
 - How to authenticate and interact with a public REST API using the `requests` library
-- How to parse and navigate deeply nested JSON structures using `isinstance()`, `.get()`, and list comprehensions
+- How to parse and navigate deeply nested JSON structures using  `.get()`, and list comprehensions
 - How genomic databases structure variant data — separating top-level variant fields, colocated variant data, and per-transcript consequences
 - Why filtering to the canonical transcript matters clinically, and how Ensembl flags it in the response
 - How to write a single flexible function that handles multiple endpoints cleanly rather than duplicating logic
 - The difference between gene-level and variant-level phenotype data, and the limitations of each
 
 ---
-
-## Data Sources
-
-- [Ensembl REST API](https://rest.ensembl.org)
-- [CADD](https://cadd.gs.washington.edu)
-- [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/)
-- [OMIM](https://www.omim.org)
-- [Cancer Gene Census](https://cancer.sanger.ac.uk/census)
