@@ -56,7 +56,6 @@ def query_ensembl(ext,on):
                     for i in response:
                         if keyword.upper() in i.get("description","").upper():
                                 filtered.append(i)
-                                pprint(i)
                     return filtered
             else: 
                 return response
@@ -66,5 +65,4 @@ def query_ensembl(ext,on):
  
 #gene = query_ensembl(lookup,"ENSG00000135100")
 #HPO = query_ensembl(phenotype,"ENSG00000135100")
-protein = query_ensembl(VEP,"ENST00000257555:c.544C>T")
-pprint(protein)
+#protein = query_ensembl(VEP,"ENST00000257555:c.544C>T")
